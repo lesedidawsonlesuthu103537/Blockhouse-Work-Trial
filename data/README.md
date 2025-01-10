@@ -1,4 +1,4 @@
-# Data sets
+# Datasets
 This folder contains a template for the data for each of the companies analysed in this work trial. The data that we are looking at is the MBP-10 data for Pfizer stock on 19 August 2024
 The five datasets included in this folder contain the following data
 
