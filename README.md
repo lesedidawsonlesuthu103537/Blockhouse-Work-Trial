@@ -7,3 +7,10 @@ This repository contains the data and the python scripts to conduct this investi
 * Secondly, you must run the "COM.py" scripts from the "Data cleaning and OFI calculation" subfolder in the "scripts" folder. This will output the remaining files in the link mentioned in the first bullet point
 * Thirdly, ensure that the output files from the second bullet point are all stored in the same working directory and save the "Corr.py" and "Reg.py" scripts from the "Correlation plots and regression model" subfolder in the "scripts" folder in the same directory.
 * Fourthly, you can run the "Corr.py" and "Reg.py" to obtain the correlation heatmaps and regression results found in the "results" folder.
+
+Here is a summary of the key findings of this work trial
+
+* Both best-level and integrated OFIs, the cross impact has approximately one-tenth of the impact of the self/price impact in estimating contemporaneous returns.
+* The integrated OFI outperforms the best-level OFI when it comes to explaining contemporaneous returns due to the impact of heavy inflows/outflows of orders on the buy and sell side on the mid-price, as it is a signal of heavy buying or selling pressure.
+* When it comes to predicting future returns, both the self and the cross impact have a small and negative impact on future returns.
+* This can possibly be attributed to the price pressure caused by the autocorrelation of imbalances diminishing very quickly in a high-frequency trading environment.
