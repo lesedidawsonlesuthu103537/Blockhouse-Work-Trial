@@ -1,4 +1,5 @@
 import csv
+# Reading the data in
 with open("JPM_raw_data.csv","r") as csvfile:
     csv_reader=csv.reader(csvfile)
     data=[]
@@ -14,7 +15,10 @@ ncol=data.shape[1]
 newdata=data.iloc[1:nr,1:ncol]
 newdata.columns=data.iloc[0,1:ncol]
 data=newdata
+
+# Deleting rows with nan
 data=data[(data != '').all(1)]
+
 print(data.columns)
 print(data.head())
 
@@ -60,17 +64,18 @@ for jjk in range(0,tot_obs):
             if v[1]!='ct':
                 fin_col.append(name)
     dat1=dat[fin_col]
-    #dat1=dat1[(dat1 != '').all(1)]
     m=dat1.shape[0]
     n=dat1.shape[1]
     import numpy as np
-    #print("Here is the raw OFI's for the bid prices")
-    OFI_bid=np.zeros((m,10)) #Might need to remove rows with NaN
-    #from math import log
-    price.append((eval(str(dat1.iat[0,1]))+eval(str(dat1.iat[0,2])))/2)
+    OFI_bid=np.zeros((m,10))
+    
+    # Calculating the mid price and storing it in a vector
+    price.append((dat1.iat[0,1]+dat1[0,2])/2)
     if jjk==tot_obs-1:
-        price.append((eval(str(dat1.iat[m-1,1]))+eval(str(dat1.iat[m-1,2])))/2)
+        price.append((dat1.iat[m-1,1]+dat1[m-1,2])/2)
     from numpy import nan
+
+    # Calculation of bid and ask order flows as specified in the report
     for i in range(1,m):
         for j in range (1,n,4):#n-2
             p=int((j+3)/4-1)
@@ -81,19 +86,11 @@ for jjk in range(0,tot_obs):
             else:
                 OFI_bid[i-1,p]=-1*int(dat1.iat[i,j+2])
     
-    #for i in range(m):
-    #    for j in range(10):
-    #        print(OFI_bid[i][j], end=' ')
-    #    print()
-    
-        
     import numpy as np
-    #print("Here is the raw OFIs for the ask prices")
-    OFI_ask=np.zeros((m,10)) #Might need to remove rows with NaN
+    OFI_ask=np.zeros((m,10)) 
     from numpy import nan
     for i in range(1,m):
-        for j in range (2,n+1,4):#n-1
-            #up=[]
+        for j in range (2,n+1,4):
             p=int((j+2)/4-1)
             if eval(str(dat1.iat[i,j]))>eval(str(dat1.iat[i-1,j])):
                 OFI_ask[i-1,p]=-1*int(dat1.iat[i,j+2])
@@ -101,22 +98,10 @@ for jjk in range(0,tot_obs):
                 OFI_ask[i-1,p]=int(dat1.iat[i,j+2])-int(dat1.iat[i-1,j+2])
             else:
                 OFI_ask[i-1,p]=int(dat1.iat[i,j+2])
-        #OFI_bid.append(up)
-    
-    #for i in range(m):
-    #    for j in range(10):
-    #        print(OFI_ask[i][j], end=' ')
-    #    print()
-    
     import numpy as np
-    
-    
-    
+    # Calculation of best-level and deeper-level OFIs
     OFI=np.sum(OFI_bid-OFI_ask, axis=0)
-    #print("Here are the deeper-level OFI's")
-    #for j in range(10):
-    #    print(OFI[j], end=' ')
-    #    print()
+
         
     # Calculating Q
     import numpy as np
@@ -128,20 +113,21 @@ for jjk in range(0,tot_obs):
             p=int((j+1)/4-1)
             Qmat[i-1,p]=dat1.iat[i,j]+dat1.iat[i,j+1]
     Q=np.sum(Qmat)/(2*m*10)
-    #print("The average order book depth is:",Q)
-    #print("The new deeper-level OFIs are:")
+    
+    # Calculation of scaled OFI
     ofi=OFI/Q
-    ofi_mat[:,jjk]=ofi
-    #for j in range(10):
-    #    print(round(ofi[j],2), end=' ')
-    #    print()   
-print(ofi_mat)
+    ofi_mat[:,jjk]=ofi  
+
+# Removing entries that only have one element in the one-minute intervals
 temp=pd.DataFrame(ofi_mat)
 cols=temp.columns[temp.isnull().any()].tolist()
 temp.drop(temp.columns[cols],axis=1,inplace=True)
 ofi_mat=temp.to_numpy()
 
 # Calculation of pricipal components
+# First we normalize the columns
+# Then we find the correlation matrix of the design matrix
+# Then we find the eigenvectors and eigenvalues
 ofi_mat=np.transpose(ofi_mat)
 ofi_mean=np.mean(ofi_mat,axis=0)
 ofi_std=np.std(ofi_mat,axis=0)
