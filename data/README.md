@@ -7,4 +7,4 @@ The five datasets included in this folder contain the following data
 * The one-minute logarithmic returns for Pfizer across the day (on 19 August 2024)
 * The list of times (in minutes) over which the OFIs and integrated OFIs were calculated
 
-You can obtain the rest of the data using the following link: https://drive.google.com/drive/folders/1jalEE3bUkLytZ1-fD1vuEzI50X0CeT4g?usp=drive_link
+You can obtain the rest of the data using the following link, including the full limit order books for all the companies investigated : https://drive.google.com/drive/folders/1jalEE3bUkLytZ1-fD1vuEzI50X0CeT4g?usp=drive_link
