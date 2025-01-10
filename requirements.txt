@@ -1,0 +1,12 @@
+————————————————————————————————————————————————
+
+Here are the packages used in this research project:
+
+numpy
+csv
+pandas
+matplotlib
+seaborn
+datetime
+statsmodels
+————————————————————————————————————————————————
